@@ -1,0 +1,51 @@
+
+services:
+  mc:
+    image: itzg/minecraft-server
+    tty: true
+    restart: always
+    stdin_open: true
+    ports:
+      - "25565:25565"
+    env_file:
+      - .env_minecraft
+
+    volumes:
+      - ./data:/data
+
+  discord-bot:
+    build: ./app
+    container_name: discord-bot
+    restart: always
+    tty: true
+    stdin_open: true
+    env_file:
+      - .env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/data
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:latest
+    container_name: postgres-db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
