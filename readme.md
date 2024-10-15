@@ -8,3 +8,4 @@ Chaque commande possede un niveau de permissions qui lui est propre
 
 Faire une commande dacces au logs
 faire une commande pour push une map directment sur le serveur
+test
